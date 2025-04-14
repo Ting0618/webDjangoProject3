@@ -109,6 +109,13 @@ def employee_delete_api(request, employee_uuid):
     """
     try:
         employee = get_object_or_404(CustomUser, uuid=employee_uuid)
+
+        if employee == request.user:
+            logging.warning(
+                f"User '{request.user.username}' (UUID: {request.user.uuid}) attempted to delete their own account.")
+            # return 403 Forbidden or 400 Bad Request is suitable
+            return JsonResponse({'success': False, 'error': 'You cannot delete your own account.'}, status=403)
+
         employee_name = employee.username # Get name for logging/response before delete
         employee.delete()
         logging.info(f"Successfully deleted employee '{employee_name}' (UUID: {employee_uuid}) by user {request.user.username}")

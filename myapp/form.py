@@ -16,7 +16,7 @@ class LoginForm(AuthenticationForm):
 
 class CustomLoginForm(forms.Form):
     username = forms.CharField(
-        label="用户名",
+        label="username",
         max_length=255,
         widget=forms.TextInput(attrs={
             'placeholder': ' ',  # 空格占位符，触发 CSS 效果
@@ -24,7 +24,7 @@ class CustomLoginForm(forms.Form):
         })
     )
     password = forms.CharField(
-        label="密码",
+        label="password",
         widget=forms.PasswordInput(attrs={
             'placeholder': ' ',  # 空格占位符
             'required': 'required'
@@ -34,21 +34,21 @@ class CustomLoginForm(forms.Form):
 
 class CustomRegisterForm(forms.Form):
     username = forms.CharField(
-        label="用户名",
+        label="username",
         max_length=255,
         widget=forms.TextInput(attrs={'placeholder': ' ', 'required': 'required'})
     )
     password = forms.CharField(
-        label="密码",
+        label="password",
         widget=forms.PasswordInput(attrs={'placeholder': ' ', 'required': 'required'})
     )
     confirm_password = forms.CharField(
-        label="确认密码",
+        label="confirm_password",
         widget=forms.PasswordInput(attrs={'placeholder': ' ', 'required': 'required'})
     )
     role = forms.ChoiceField(
-        label="角色",
-        choices=[('user', '用户'), ('admin', '管理员')],
+        label="role",
+        choices=[('user', 'user'), ('admin', 'admin')],
         widget=forms.Select(attrs={'required': 'required'})
     )
 
@@ -118,8 +118,6 @@ class EmployeeAddForm(UserCreationForm): # Inherit for password handling
             'address', 'city', 'country', 'zipcode',
             'role', 'date', 'username'
             )
-
-
 
 
 # Form to handle avatar uploads

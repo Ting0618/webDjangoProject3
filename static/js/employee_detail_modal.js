@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listener for Save Button INSIDE the modal ---
     if (modalSaveButton) {
         modalSaveButton.addEventListener('click', () => {
-            // --- AJAX Save Logic (Keep your existing save logic here) ---
+            // --- AJAX Save Logic ---
             const formData = {};
             const inputs = detailModalContent.querySelectorAll('input[data-field], select[data-field]');
             inputs.forEach(input => {

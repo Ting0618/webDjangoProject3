@@ -1,0 +1,5 @@
+.env
+.gitignore
+backup.sql
+Dockerfile
+media/avatars
