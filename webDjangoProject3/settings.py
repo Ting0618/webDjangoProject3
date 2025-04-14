@@ -37,8 +37,7 @@ SECRET_KEY = 'django-insecure-#-a$vqu+m71vs^txhe#81ogi1vje2_dg--iygi@fghsr(hcso6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -158,10 +158,10 @@ AUTHENTICATION_BACKENDS = [
 AUTH_USER_MODEL = 'myapp.CustomUser'
 
 # 静态文件存放目录（可选，项目级静态文件）
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # BASE_DIR 是项目根目录
-]
-
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",  # BASE_DIR 是项目根目录
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'  # 允许同源 iframe
 
