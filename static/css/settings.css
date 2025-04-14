@@ -1,0 +1,299 @@
+/* static/css/settings.css */
+
+/* --- Copy CSS Variables --- */
+:root {
+    --primary-color: #FFD700; /* 主要金色 */
+    --accent-color: #558d6b; /* 强调绿色 FFD700 */
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #757575;
+    --text-color: #757575;
+    --white: #ffffff;
+    --black: #000000;
+    --error-bg: #ffebee;
+    --error-text: #c62828;
+    --error-border: #f5c6cb;
+    --success-bg: #e8f5e9;
+    --success-text: #2e7d32;
+    --success-border: #c3e6cb;
+    --info-bg: #e1f5fe;
+    --info-text: #01579b;
+    --info-border: #b3e5fc;
+}
+
+/* --- Body Styles (If settings page loads independently/in iframe) --- */
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0; /* Ensure no default body margin if in iframe */
+    padding: 20px; /* Add some padding around the content */
+}
+
+/* --- Main Container Styling (Adapted from .form-container) --- */
+.settings-container {
+    max-width: 700px;
+    margin: 20px auto; /* Adjusted margin for potentially being in iframe */
+    padding: 40px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Main Title Styling (Adapted from h1) --- */
+.settings-container h1 {
+    text-align: center;
+    margin-bottom: 35px; /* Increased margin */
+    color: var(--primary-color); /* Gold */
+    font-weight: 600;
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.settings-container h1:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color); /* Gold */
+}
+
+/* --- Section Styling --- */
+.settings-section {
+    margin-bottom: 40px; /* Increased space between sections */
+}
+
+.settings-section h2 {
+    margin-bottom: 20px; /* Increased space below section title */
+    color: var(--dark-gray);
+    font-weight: 600; /* Make section titles bold */
+    font-size: 20px; /* Slightly larger section titles */
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 10px; /* More padding below title */
+}
+
+/* --- Current Avatar Styling --- */
+.current-avatar {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px; /* More space */
+}
+
+.current-avatar p {
+    margin: 0;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.current-avatar img {
+    border-radius: 50%;
+    border: 3px solid var(--medium-gray);
+    width: 80px;
+    height: 80px;
+    object-fit: cover; /* Handles non-square images better */
+}
+
+/* --- Form Element Styling (Paragraphs from form.as_p) --- */
+.settings-section form p {
+    margin-bottom: 25px; /* Like .form-group */
+}
+
+.settings-section form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-gray);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settings-section form input[type="password"],
+.settings-section form input[type="file"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--medium-gray);
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: var(--white);
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+}
+
+.settings-section form input[type="password"]:focus,
+.settings-section form input[type="file"]:focus {
+    border-color: var(--primary-color); /* Gold */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2); /* Gold shadow */
+}
+
+/* --- Button Styling (Adapted from .btn and .btn-save-employee) --- */
+.settings-container .btn { /* More specific selector */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-width: 140px; /* Slightly wider button */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.settings-container .btn-submit { /* Use this class on your buttons */
+    background-color: var(--primary-color); /* Gold */
+    color: var(--black); /* Black text on gold for contrast */
+}
+
+.settings-container .btn-submit:hover {
+    background-color: #e6c300; /* Darker gold */
+    color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.settings-section form button[type="submit"] {
+    margin-top: 10px; /* Space above button if needed */
+}
+
+/* --- Separator Styling --- */
+.settings-container hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--medium-gray);
+    margin: 40px 0;
+}
+
+/* --- Error List Styling (Adapted from .errorlist) --- */
+.settings-section .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0 0; /* Margin above errors */
+}
+
+.settings-section .errorlist li {
+    color: var(--error-text);
+    background-color: var(--error-bg);
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    border: 1px solid var(--error-border);
+}
+
+.settings-section .errorlist li:before {
+    content: "!";
+    display: inline-block;
+    flex-shrink: 0; /* Prevent icon shrinking */
+    width: 18px;
+    height: 18px;
+    background-color: #e74c3c; /* Keep distinct error icon color */
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* --- Django Messages Styling (Adapted from .alert-*) --- */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.messages li {
+    padding: 15px 20px; /* More padding */
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-size: 15px;
+    border-left: 5px solid transparent; /* Thicker side border */
+    display: flex; /* Align icon and text */
+    align-items: center;
+}
+/* Add icons to messages */
+.messages li::before {
+    font-family: sans-serif; /* Basic font for symbol */
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.messages li.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border-left-color: var(--success-text);
+}
+.messages li.success::before {
+    content: '✓'; /* Checkmark */
+    color: var(--success-text);
+}
+
+.messages li.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border-left-color: var(--error-text);
+}
+.messages li.error::before {
+    content: '✕'; /* Cross mark */
+    color: var(--error-text);
+}
+
+.messages li.info {
+    background-color: var(--info-bg);
+    color: var(--info-text);
+    border-left-color: var(--info-text);
+}
+.messages li.info::before {
+    content: 'ℹ'; /* Info symbol */
+    color: var(--info-text);
+}
+
+.messages li.warning {
+    background-color: #fff8e1; /* Lighter warning */
+    color: #ff8f00; /* Darker warning */
+    border-left-color: #ff8f00;
+}
+.messages li.warning::before {
+    content: '⚠'; /* Warning symbol */
+    color: #ff8f00;
+}
+
+
+/* --- Responsive adjustments (Copied from add_employee.css) --- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Less padding on small screens */
+    }
+    .settings-container {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    .settings-container h1 {
+        font-size: 24px;
+    }
+     .settings-section h2 {
+        font-size: 18px;
+    }
+    .current-avatar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

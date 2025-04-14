@@ -1,0 +1,508 @@
+/* static/css/employee.css */
+
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* 基本页面样式 */
+body {
+    background-color: white;
+    padding: 20px;
+}
+
+/* 标题栏 */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFD700; /* Gold */
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+    color: #f8f9fa;
+}
+
+/* 筛选框 */
+.filter-box {
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+/* 移除 form 上的 Grid 或 Flex 布局 */
+.filter-box form {
+    /* No display: grid or display: flex needed here anymore */
+}
+
+/* 新增：为筛选行容器设置样式 */
+.filter-row {
+    display: flex;         /* 使用 Flexbox 排列行内元素 */
+    align-items: center;   /* 垂直居中对齐行内元素 */
+    flex-wrap: wrap;       /* 允许行内元素在空间不足时换行（好习惯） */
+    gap: 10px 15px;        /* 行内元素之间的垂直(10px)和水平(15px)间距 */
+    margin-bottom: 15px;   /* 行与行之间的垂直间距 */
+}
+
+/* 移除最后一行的下边距 */
+.filter-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 保持 filter-box 内元素的样式 */
+.filter-box label {
+    /*font-weight: bold;*/
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.filter-box input[type="text"],
+.filter-box select {
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 180px; /* 保持固定宽度 */
+    vertical-align: middle;
+}
+
+.filter-box button {
+    padding: 8px 15px;
+    background-color: #66a17f; /* Your green color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    /* justify-self: start; */ /* Grid 属性，不再需要 */
+    width: auto;
+}
+
+.filter-box button:hover {
+    background-color: #558d6b; /* Darker green on hover */
+}
+
+/* 表格样式 (保持不变) */
+table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e9ecef; }
+th { background: #66a17f; color: white; font-weight: 600; text-transform: uppercase; font-size: 13px; }
+tbody tr:nth-child(even) { background-color: #f8f9fa; }
+tbody tr:hover { background-color: #e0f0e5; color: #333; }
+tbody tr:hover td { color: #333; }
+
+/* 操作按钮 (保持不变) */
+.action-btn { padding: 5px 10px; font-size: 13px; border: none; border-radius: 4px; cursor: pointer; margin: 0 3px; color: white; text-decoration: none; transition: opacity 0.3s; display: inline-block; }
+.action-btn:hover { opacity: 0.85; }
+.edit-btn { background: #3498db; }
+.delete-btn { background: #e74c3c; }
+.details-btn { background: #f39c12; }
+.publish-btn { background: #66a17f;}
+.publish-btn-disabled{ background: #cccccc; cursor: not-allowed; }
+.Revoke-btn-disabled{ background: #cccccc; cursor: not-allowed; }
+.revoke-btn { background: #f39c12; }
+.revoke-btn:hover { background: #e67e22; }
+
+/* 分页样式 (保持不变) */
+.pagination { text-align: center; margin-top: 30px; margin-bottom: 20px; padding: 10px 0; }
+.pagination .page-info { margin-right: 20px; color: #555; font-size: 14px; display: inline-block; vertical-align: middle; margin-bottom: 5px; }
+.pagination .page-links { display: inline-block; vertical-align: middle; }
+.pagination .page-step { display: inline-block; padding: 6px 12px; margin: 0 3px; border: 1px solid #ddd; border-radius: 4px; text-decoration: none; color: #66a17f; background-color: #fff; transition: background-color 0.2s, color 0.2s; font-size: 14px; line-height: 1.5; }
+.pagination .page-step:hover { background-color: #f0f0f0; color: #558d6b; border-color: #ccc; }
+.pagination .page-step.disabled { color: #aaa; background-color: #f8f8f8; border-color: #eee; cursor: not-allowed; pointer-events: none; }
+.pagination .page-step.disabled:hover { background-color: #f8f8f8; color: #aaa; border-color: #eee; }
+.pagination .page-step.current { background-color: #66a17f; color: white; border-color: #66a17f; font-weight: bold; }
+
+/* 创建按钮 (保持不变) */
+.btn-create { padding: 10px 18px; font-size: 16px; background: #FFD700; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; transition: background-color 0.3s, box-shadow 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.btn-create:hover { background-color: #e6c200; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+
+/* 模态框样式 (保持不变) */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); overflow-y: auto; }
+.modal-content { background: #e5f4eb; width: 90%; max-width: 550px; padding: 25px 30px; border-radius: 8px; position: relative; margin: 5% auto; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+.close { position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; line-height: 1; transition: color 0.2s; }
+.close:hover { color: #e74c3c; }
+.modal-content h2 { margin-top: 0; margin-bottom: 20px; color: #333; text-align: center; font-weight: 600; }
+.modal-content label { display: block; margin: 12px 0 5px; font-weight: bold; font-size: 14px; color: #555; }
+.modal-content input[type="text"], .modal-content input[type="email"], .modal-content input[type="tel"], .modal-content select, .modal-content textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; margin-bottom: 10px; }
+.modal-content input:focus, .modal-content select:focus, .modal-content textarea:focus { border-color: #66a17f; outline: none; box-shadow: 0 0 0 2px rgba(102, 161, 127, 0.2); }
+#editor { height: 150px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px; }
+.modal-content .btn-save { margin-top: 20px; background: #FFD700; color: #333; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background-color 0.3s; width: 100%; display: block; }
+.modal-content .btn-save:hover { background: #e6c200; }
+.error-message { color: #e74c3c; font-size: 12px; margin-top: -5px; margin-bottom: 10px; display: block; }
+
+/* 响应式调整 (保持不变) */
+@media (max-width: 768px) {
+    /* Adjust filter row wrapping/spacing if needed */
+    .filter-row {
+        gap: 10px; /* Reduce gap slightly */
+    }
+    .filter-box input[type="text"],
+    .filter-box select {
+         width: 150px; /* Maybe slightly smaller width? */
+    }
+    /* ... other 768px rules ... */
+    th, td { padding: 10px 8px; font-size: 13px; }
+    .action-btn { padding: 4px 8px; font-size: 12px; }
+    .pagination .page-info { display: block; margin-right: 0; margin-bottom: 10px; }
+    .pagination .page-links { display: block; }
+}
+
+@media (max-width: 600px) { /* Stricter breakpoint for filter elements */
+    .filter-row {
+        flex-direction: column; /* Stack items vertically within a row */
+        align-items: stretch; /* Make items full width */
+        gap: 10px 0; /* Only vertical gap */
+        margin-bottom: 20px;
+    }
+     .filter-box input[type="text"],
+     .filter-box select,
+     .filter-box button {
+        width: 100%; /* Full width */
+        margin-left: 0; /* Reset button margin */
+     }
+     .filter-box label {
+        margin-bottom: 3px; /* Space below label */
+     }
+     .filter-row:last-child {
+         margin-bottom: 0;
+     }
+}
+
+@media (max-width: 480px) {
+     .topbar { font-size: 18px; padding: 10px 15px; }
+     /* .filter-row stacking from 600px should cover this */
+     .modal-content { width: 95%; padding: 20px 15px; }
+}
+
+/* edit */
+/* static/css/employee.css */
+
+/* --- Re-use or add basic modal styles --- */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Darker overlay */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    overflow-y: auto; /* Allow modal scroll if content is long */
+    align-items: center; /* For centering */
+    justify-content: center; /* For centering */
+}
+
+/* Style for the actual modal popup box */
+.modal-content {
+    background: white;
+    width: 90%; /* Responsive width */
+    max-width: 550px; /* Default max width */
+    padding: 25px 30px;
+    border-radius: 8px;
+    position: relative; /* Needed for absolute positioning of close button */
+    margin: 5% auto; /* Default centering */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-out;
+    /* Reset display if .modal has display:flex/grid */
+    display: block;
+}
+
+/* Optional: Class for a larger modal */
+.modal-content.large {
+    max-width: 700px; /* Wider for more details */
+}
+
+
+/* Re-use close button style */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.modal-content .close:hover { color: #e74c3c; }
+
+/* Style for the detail content area */
+#modalDetailContent p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+#modalDetailContent p strong {
+    display: inline-block;
+    width: 120px; /* Align labels */
+    color: #555;
+}
+#modalDetailContent span[data-field] {
+    color: #333;
+}
+
+/* Style for visible state */
+.modal.is-visible {
+    display: flex; /* Or 'block', depending on how you centered .modal-content */
+}
+
+/* Keyframe animation (same as before) */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Add button styles if needed */
+.btn { /* Basic button styling example */
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.btn-secondary { color: #333; background-color: #fff; border-color: #ccc; }
+.btn-primary { color: #fff; background-color: #337ab7; border-color: #2e6da4; }
+.btn-danger { color: #fff; background-color: #d9534f; border-color: #d43f3a; }
+.btn-success { color: #fff; background-color: #5cb85c; border-color: #4cae4c; }
+
+/* static/css/employee.css */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal.is-visible {
+    display: block;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.modal-content.large {
+    max-width: 800px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.edit-field {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Alert Modal */
+.alert-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+}
+
+.alert-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.alert-modal.success .alert-modal-content {
+    border-left: 5px solid #28a745;
+}
+
+.alert-modal.error .alert-modal-content {
+    border-left: 5px solid #dc3545;
+}
+
+.alert-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    /* display: none; /* JS will control display */
+    align-items: center;
+    opacity: 0; /* Start transparent for fadeIn */
+    /* animation: fadeIn 0.5s ease-out forwards; /* Apply animation via JS */
+    z-index: 1060; /* Ensure it's above other modals (adjust if needed) */
+    display: none; /* Hide initially */
+}
+
+/* 成功提示框 */
+.success-alert {
+    background: #e8f5e9;
+    border: 1px solid #66bb6a;
+}
+
+/* 失败提示框 */
+.error-alert {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* Start slightly higher */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%); /* Settle in the middle */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* End slightly higher */
+    }
+}
+
+/* 图标样式 */
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #66bb6a;
+    margin-right: 15px;
+    position: relative;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+.checkmark::after { /* Corrected centering */
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.crossmark {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ef5350;
+    margin-right: 15px;
+    position: relative;
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+.crossmark::before, .crossmark::after {
+    content: '';
+    position: absolute;
+    left: 11px; /* Center the cross */
+    top: 4px; /* Adjust vertical position */
+    width: 2px;
+    height: 16px; /* Adjust length */
+    background: white;
+}
+.crossmark::before { transform: rotate(45deg); }
+.crossmark::after { transform: rotate(-45deg); }
+
+
+/* 文字样式 */
+.alert-text {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+.success-text { color: #2e7d32; }
+.error-text { color: #c62828; }
+
+/* 遮罩层 */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: none; /* Controlled by JS */
+    z-index: 1059; /* Slightly below alert box */
+}

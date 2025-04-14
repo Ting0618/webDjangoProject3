@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR System</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/settings.css' %}" />
+</head>
+<body>
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <!-- Basic top-level menu item -->
+    <a href="{% url 'home' %}" target="contentFrame">Home</a>
+    <!-- Basic top-level menu item -->
+    <a href="{% url 'event_management' %}" target="contentFrame">Event Management</a>
+
+    <!-- Menu item with a submenu：Employee Management -->
+    <div class="menu-item">
+      <a href="{% url 'comingSoon' %}" target="contentFrame" class="menu-parent">
+        Employee Manage
+        <span class="arrow">&#9662;</span>
+      </a>
+      <div class="submenu">
+        <a href="{% url 'employee' %}" target="contentFrame">Employee List</a>
+        <a href="{% url 'add_employee' %}" target="contentFrame">Add Employee</a>
+      </div>
+    </div>
+
+    <!-- Menu item with a submenu：Reports -->
+{#    <div class="menu-item">#}
+{#      <a href="{% url 'comingSoon' %}" target="contentFrame" class="menu-parent">#}
+{#        Reports#}
+{#        <span class="arrow">&#9662;</span>#}
+{#      </a>#}
+{#      <div class="submenu">#}
+{#        <a href="{% url 'comingSoon' %}" target="contentFrame">Monthly Report</a>#}
+{#        <a href="{% url 'comingSoon' %}" target="contentFrame">Annual Report</a>#}
+{#      </div>#}
+{#    </div>#}
+
+    <a href="{% url 'settings' %}" target="contentFrame">Settings</a>
+    <a href="javascript:void(0);" id="logoutLink" data-logout-url="{% url 'logout' %}">
+      Logout
+    </a>
+  </div>
+
+  <!-- Right Content Area -->
+  <div class="content">
+    <iframe name="contentFrame" src="{% url 'home' %}"></iframe>
+  </div>
+
+  <!-- import outernal JavaScript file -->
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

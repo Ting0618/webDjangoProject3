@@ -1,0 +1,90 @@
+ /*Confirmation Modal Box*/
+.confirm-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px; /* Adjust width as needed */
+    background: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1070; /* Higher than overlay, potentially higher than alert boxes if needed */
+    text-align: center;
+    opacity: 0; /* Start hidden for animation */
+    display: none; /* Controlled by JS */
+    border-top: 5px solid #ffc107; /* Example: Warning color border */
+}
+
+/* Confirmation Icon (Example: Question Mark) */
+.confirm-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffc107; /* Warning color */
+    color: white;
+    font-size: 28px;
+    line-height: 40px; /* Center content vertically */
+    margin: 0 auto 15px auto; /* Center horizontally, add bottom margin */
+    font-weight: bold;
+}
+
+/* Confirmation Text */
+.confirm-text {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 17px;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Confirmation Action Buttons Container */
+.confirm-actions {
+    display: flex;
+    justify-content: center; /* Center buttons */
+    gap: 15px; /* Space between buttons */
+}
+
+/* General Button Styling (reuse if possible, ensure specificity) */
+.confirm-actions .btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Specific Button Styles */
+.confirm-actions .btn-confirm {
+    background-color: #d43f3a; /* Danger red */
+    color: white;
+}
+.confirm-actions .btn-confirm:hover {
+    background-color: #d9534f;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.confirm-actions .btn-cancel {
+    background-color: #7f8c97; /* Secondary gray */
+    color: white;
+}
+.confirm-actions .btn-cancel:hover {
+    background-color: #717f8a;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Overlay (reuse if #customConfirmOverlay exists, ensure z-index is correct) */
+/* Make sure overlay CSS exists */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4); /* Slightly darker? */
+    display: none; /* Controlled by JS */
+    z-index: 1069; /* Below confirm box */
+}

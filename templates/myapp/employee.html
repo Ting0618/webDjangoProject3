@@ -1,0 +1,326 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Employee Management</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/confirmation.css' %}">
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+</head>
+<body>
+<!-- 标题栏 -->
+<div class="topbar">
+    <span>Employee Management</span>
+</div>
+
+<!-- 筛选框 -->
+<div class="filter-box">
+    <form method="GET" action="">
+        <!-- 第一行筛选 -->
+        <div class="filter-row">
+            <label for="uuid">uuid:</label>
+            <input type="text" id="uuid" name="uuid" value="{{ request.GET.uuid }}">
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" value="{{ request.GET.username }}">
+
+            <label for="department">Department:</label>
+            <select id="department" name="department">
+                <option value="">All</option>
+                <option value="HR" {% if request.GET.department == "HR" %}selected{% endif %}>HR</option>
+                <option value="IT" {% if request.GET.department == "IT" %}selected{% endif %}>IT</option>
+                <option value="Marketing" {% if request.GET.department == "Marketing" %}selected{% endif %}>Marketing</option>
+                <option value="Finance" {% if request.GET.department == "Finance" %}selected{% endif %}>Finance</option>
+            </select>
+        </div>
+
+        <!-- 第二行筛选 -->
+        <div class="filter-row">
+            <label for="role">Role:</label>
+            <select id="role" name="role">
+                <option value="">All</option>
+                <option value="staff" {% if request.GET.role == "staff" %}selected{% endif %}>Staff</option>
+                <option value="admin" {% if request.GET.role == "admin" %}selected{% endif %}>Admin</option>
+                <option value="hr3" {% if request.GET.role == "hr3" %}selected{% endif %}>HR Level 3</option>
+                <option value="hr2" {% if request.GET.role == "hr2" %}selected{% endif %}>HR Level 2</option>
+                <option value="hr1" {% if request.GET.role == "hr1" %}selected{% endif %}>HR Level 1</option>
+            </select>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="">All</option>
+                <option value="Male" {% if request.GET.gender == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if request.GET.gender == "Female" %}selected{% endif %}>Female</option>
+                <option value="Other" {% if request.GET.gender == "Other" %}selected{% endif %}>Other</option>
+            </select>
+
+            {# 将按钮放在第二行的末尾 #}
+            <button type="submit">Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- 员工信息列表 -->
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>uuid</th>
+        <th>Username</th>
+        <th>Gender</th>
+{#        <th>Role</th>#}
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Department</th>
+        <th>Country</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="employeeTableBody">
+    {% for employee in employees %}
+        {# Add data-employee-uuid to the row #}
+        <tr data-employee-uuid="{{ employee.uuid }}">
+            <td>{{ employees.start_index|add:forloop.counter0 }}</td>
+            {# Add data-field to cells you might update #}
+            <td data-field="uuid">{{ employee.uuid }}</td> {# Usually UUID doesn't change, but good practice #}
+            <td data-field="username">{{ employee.username }}</td>
+            <td data-field="gender">{{ employee.gender }}</td>
+{#            <td data-field="role">{{ employee.role }}</td>#}
+            <td data-field="email">{{ employee.email }}</td>
+            <td data-field="phone">{{ employee.phone }}</td>
+            <td data-field="department">{{ employee.department }}</td>
+            <td data-field="country">{{ employee.country }}</td>
+            <td> {# Action buttons column #}
+                 {# Edit/Details buttons using employee-modal-trigger #}
+                 <a href="javascript:void(0);"
+                   class="action-btn edit-btn employee-modal-trigger"
+                   data-uuid="{{ employee.uuid }}"
+                   data-detail-url="{% url 'employee_detail_api' employee.uuid %}"
+                   data-mode="edit"
+                   >Edit</a>
+                 <a href="javascript:void(0);" {# Prevent navigation #}
+                    class="action-btn delete-btn delete-employee-trigger" {# New class #}
+                    data-uuid="{{ employee.uuid }}"
+                    data-delete-url="{% url 'employee_delete_api' employee.uuid %}" {# New URL name needed #}
+                    data-username="{{ employee.username|escapejs }}" {# Pass username for confirmation #}
+                    >Delete</a>
+                 <a href="javascript:void(0);"
+                   class="action-btn details-btn employee-modal-trigger"
+                   data-uuid="{{ employee.uuid }}"
+                   data-detail-url="{% url 'employee_detail_api' employee.uuid %}"
+                   data-mode="view"
+                   >Details</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="10">No employees found matching your criteria.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<!-- 分页控件 -->
+{% if employees.has_other_pages %}
+    <div class="pagination">
+        <span class="page-info">
+            Page {{ employees.number }} of {{ employees.paginator.num_pages }}
+        </span>
+        <span class="page-links">
+            {% if employees.has_previous %}
+                <a href="?page=
+                        {{ employees.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value|urlencode }}{% endif %}{% endfor %}"
+                   class="page-step prev">« Previous</a>
+            {% else %}
+                <span class="page-step prev disabled">« Previous</span>
+            {% endif %}
+            {% if employees.has_next %}
+                <a href="?page=
+                        {{ employees.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value|urlencode }}{% endif %}{% endfor %}"
+                   class="page-step next">Next »</a>
+            {% else %}
+                <span class="page-step next disabled">Next »</span>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
+<!-- 分页控件结束 -->
+
+
+<!-- 模态框 -->
+<div id="eventModal" class="modal">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h2>Create New Employee</h2>
+
+        <label for="modal-username">Username:</label>
+        <input type="text" id="modal-username" placeholder="Enter username">
+
+        <label for="modal-department">Department:</label>
+        <input type="text" id="modal-department" placeholder="Enter department">
+
+        <label for="modal-email">Email:</label>
+        <input type="email" id="modal-email" placeholder="Enter email">
+
+        <label for="modal-phone">Phone:</label>
+        <input type="tel" id="modal-phone" placeholder="Enter phone number">
+
+        <label for="modal-gender">Gender:</label>
+        <select id="modal-gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="modal-role">Role:</label>
+            <select id="modal-role">
+                <option value="">All</option>
+                <option value="staff" >Staff</option>
+                {% if user.is_staff %}
+                        <option value="admin">Admin</option>
+                {% endif %}
+                <option value="hr3" >HR Level 3</option>
+                <option value="hr2">HR Level 2</option>
+                <option value="hr1">HR Level 1</option>
+            </select>
+
+        <button class="btn-save" id="saveEmployee">Save Employee</button>
+    </div>
+</div>
+
+
+<!-- --- Employee Detail Modal --- -->
+<div id="employeeDetailModal" class="modal">
+    <div class="modal-content large">
+        <span class="close" id="closeDetailModal">×</span>
+        <h2>Employee Details</h2>
+        <hr>
+        <div id="modalDetailContent">
+            <!-- UUID (非可编辑字段，仅显示) -->
+            <p>
+                <strong>UUID:</strong>
+                <span data-field="uuid" class="view-mode"></span>
+                <input type="text" data-field="uuid" class="edit-mode" readonly style="display: none;">
+            </p>
+            <!-- Username -->
+            <p>
+                <strong>Username:</strong>
+                <span data-field="username" class="view-mode"></span>
+                <input type="text" data-field="username" class="edit-mode" style="display: none;">
+            </p>
+            <!-- Role -->
+            <p>
+                <strong>Role:</strong>
+                <span data-field="role" class="view-mode"></span>
+                <select data-field="role" class="edit-mode" style="display: none;">
+                    <option value="staff" >Staff</option>
+                    {% if user.is_staff %}
+                        <option value="admin">Admin</option>
+                    {% endif %}
+                    <option value="hr3" >HR Level 3</option>
+                    <option value="hr2">HR Level 2</option>
+                    <option value="hr1">HR Level 1</option>
+                </select>
+            </p>
+            <!-- Email -->
+            <p>
+                <strong>Email:</strong>
+                <span data-field="email" class="view-mode"></span>
+                <input type="email" data-field="email" class="edit-mode" style="display: none;">
+            </p>
+            <!-- Gender -->
+            <p>
+                <strong>Gender:</strong>
+                <span data-field="gender" class="view-mode"></span>
+                <select data-field="gender" class="edit-mode" style="display: none;">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </p>
+            <!-- Department -->
+            <p>
+                <strong>Department:</strong>
+                <span data-field="department" class="view-mode"></span>
+                <select data-field="department" class="edit-mode" style="display: none;">
+                    <option value="IT">IT</option>
+                    <option value="HR">HR</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Finance">Finance</option>
+                </select>
+            </p>
+            <!-- Phone -->
+            <p>
+                <strong>Phone:</strong>
+                <span data-field="phone" class="view-mode"></span>
+                <input type="tel" data-field="phone" class="edit-mode" style="display: none;">
+            </p>
+            <!-- Birthday -->
+            <p>
+                <strong>Birthday:</strong>
+                <span data-field="birthday" class="view-mode"></span>
+                <input type="date" data-field="birthday" class="edit-mode" style="display: none;">
+            </p>
+            <!-- Country -->
+            <p>
+                <strong>Country:</strong>
+                <span data-field="country" class="view-mode"></span>
+                <input type="text" data-field="country" class="edit-mode" style="display: none;">
+            </p>
+            <!-- Date Joined (非可编辑字段，仅显示) -->
+            <p>
+                <strong>Date Joined:</strong>
+                <span data-field="date" class="view-mode"></span>
+                <input type="date" data-field="date" class="edit-mode" style="display: none;">
+            </p>
+            <!-- 错误信息 -->
+            <p id="modalError" style="color: red; display: none;"></p>
+        </div>
+        <hr>
+        <div id="modalActions" style="text-align: right; margin-top: 15px;">
+            <button id="modalEditButton" class="btn btn-primary" style="margin-right: 10px;">Edit</button>
+            <button id="modalSaveButton" class="btn btn-success" style="display: none; margin-right: 10px;">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Alert Modal -->
+<div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+
+<div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">
+    <div class="checkmark"></div>
+    <span class="alert-text success-text" id="customSuccessAlertText">Success！</span>
+</div>
+
+<div class="alert-box error-alert" id="customErrorAlert" style="display: none;">
+    <div class="crossmark"></div>
+    <span class="alert-text error-text" id="customErrorAlertText">Error! Please try again</span>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="overlay" id="customConfirmOverlay" style="display: none;"></div>
+
+<div class="confirm-box" id="customConfirmBox" style="display: none;">
+    <div class="confirm-icon question-mark">?</div>
+    {# Or use an exclamation mark icon #}
+    <span class="confirm-text" id="customConfirmText">Are you sure?</span>
+    <div class="confirm-actions">
+        <button class="btn btn-confirm" id="confirmBtnYes">Yes</button>
+        <button class="btn btn-cancel" id="confirmBtnNo">No</button>
+    </div>
+</div>
+
+
+{# existing modal for Add Employee #}
+<div id="eventModal" class="modal">
+    {# ... content of add employee modal ... #}
+</div>
+
+<script src="{% static 'js/employee_detail_modal.js' %}"></script>
+<script src="{% static 'js/alert.js' %}"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+</body>
+</html>

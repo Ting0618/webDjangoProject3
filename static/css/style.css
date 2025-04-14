@@ -1,0 +1,39 @@
+employeeManage.cssbody {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+}
+
+table {
+    margin-top: 20px;
+    width: 80%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #66a17f;
+    color: white;
+}
+
+.btn {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px;
+    color: white;
+    transition: background 0.3s;
+}
+
+.btn-edit { background: #3498db; }
+.btn-delete { background: #e74c3c; }
+.btn-publish { background: #27ae60; }
+.btn-revoke { background: #f39c12; }

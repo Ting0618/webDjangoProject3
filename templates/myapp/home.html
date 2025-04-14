@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}"/>
+    <title>Employee Dashboard</title>
+
+</head>
+<body>
+<div class="dashboard">
+    <!-- welcome section -->
+    <div class="header">
+        {# Use user's actual name or username #}
+        <h1>Welcome, {{ request.user.get_full_name|default:request.user.username }}!</h1>
+        <p>Employee Dashboard</p>
+    </div>
+
+    <!-- information card -->
+    <div class="info-cards">
+        {# Ensure the user is authenticated before trying to access profile #}
+        {% if request.user.is_authenticated %}
+            <div class="card">
+                <div class="profile-pic">
+                    {# --- START AVATAR LOGIC --- #}
+                    {# Check if the user has a profile record associated #}
+                    {% if request.user.profile %}
+                        {# Access the avatar URL - this uses the uploaded or default image #}
+                        <img src="{{ request.user.profile.avatar.url }}"
+                             alt="{{ request.user.username }}'s Profile Picture"/>
+                    {% else %}
+                        {# Fallback if profile doesn't exist for some reason #}
+                        <img src="{% static 'images/login.jpeg' %}" alt="Default Profile Picture"/>
+                    {% endif %}
+                    {# --- END AVATAR LOGIC --- #}
+                </div>
+                {# Display actual user data #}
+                <h2>{{ request.user.get_full_name|default:request.user.username }}</h2>
+                {# Assuming 'job_title' is a field on your CustomUser or Profile model #}
+                {# If on CustomUser: <p>{{ request.user.job_title|default:'N/A' }}</p> #}
+                {# If on Profile: <p>{{ request.user.profile.job_title|default:'N/A' }}</p> #}
+                {# Example using a placeholder if field doesn't exist yet #}
+                <p>Employee</p> {# Replace with actual job title later #}
+                <p>Email: {{ request.user.email|default:'No email provided' }}</p>
+                <p>Department: {{ request.user.department|default:'N/A' }}</p> {# Assumes department is on CustomUser #}
+            </div>
+        {% else %}
+            <p>Please log in to view your information.</p>
+        {% endif %}
+
+        <!-- Project Stats card -->
+        <div class="card">
+            <h2>Project Stats</h2>
+            <div class="stats">
+                {# These stats would likely come from other models/context data #}
+                <div class="stat">
+                    <h3>5</h3>
+                    <p>Active</p>
+                </div>
+                <div class="stat">
+                    <h3>12</h3>
+                    <p>Total</p>
+                </div>
+                <div class="stat">
+                    <h3>3</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance information -->
+        <div class="card">
+            <h2>Performance</h2>
+            {# These stats would likely come from other models/context data #}
+            <p>Rating: <strong>A</strong></p>
+            <p>Last Review: <strong>2025-01-15</strong></p>
+        </div>
+    </div>
+
+    <!-- Announcements section -->
+    <div class="card announcements">
+        <h2>Latest Events</h2>
+        {% if latest_events %}
+            <ul id="announcementList">
+                {% for event in latest_events %}
+                    <li class="announcement-item">
+                        {# Set href to the event comments URL and target the iframe #}
+                        <a href="{% url 'event_comments' event.id %}" target="contentFrame">
+                            {{ event.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No current announcements.</p>
+        {% endif %}
+    </div>
+
+    <!-- Event Detail Modal Structure (Initially Hidden) -->
+    <div id="eventModal" class="modal-overlay" style="display: none;" role="dialog" aria-labelledby="modalEventTitle" aria-modal="true">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <h3 id="modalEventTitle">Event Title Placeholder</h3>
+            <div id="modalEventContent" class="modal-scrollable-content">
+                <p>Event content placeholder...</p>
+            </div>
+            <hr>
+            <div class="comment-section-link">
+                {# This link will navigate away to the dedicated comment page #}
+                <a href="#" id="viewCommentsLink" class="btn btn-secondary">View/Discuss Comments</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/dashboard_modal.js' %}"></script>
+</body>
+</html>

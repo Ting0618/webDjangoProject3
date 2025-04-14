@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>HR Event Management</title>
+
+    <!-- Use employee.css for main styling -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/employee.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/confirmation.css' %}">
+
+    <!-- Keep Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- Topbar should be styled by .topbar rule in employee.css -->
+<div class="topbar">
+    <span>Event Management</span>
+    {% if user.is_authenticated %}
+        <span style="float: right; margin-right: 20px;">
+                Welcome, {{ user.username }} {% if is_admin %}(Admin){% endif %}
+            </span>
+    {% endif %}
+
+</div>
+
+<!-- Table should be styled by table, th, td rules in employee.css -->
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Event Title</th>
+        <th>Creator</th>
+        <th>Scheduled Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="eventTableBody">
+    {% for event in events %}
+        <tr data-event-row-id="{{ event.id }}">
+            {# Column 1: Counter - No data-field needed #}
+            <td>{{ events.start_index|add:forloop.counter0 }}</td>
+            {# Corrected pagination counter #}
+
+            {# Column 2: Event Title #}
+            <td data-field="title">{{ event.title|escape }}</td>
+            {# <<< ADDED data-field="title" #}
+
+            {# Column 3: Creator #}
+            {# Match the key your API returns, e.g., "creator_username" #}
+            <td data-field="creator_username">{{ event.creator.username|escape }}</td>
+            {# <<< ADDED data-field (adjust key if needed) #}
+
+            {# Column 4: Scheduled Date #}
+            <td data-field="scheduled_push_time">{{ event.scheduled_push_time|date:"Y-m-d H:i" }}</td>
+            {# <<< ADDED data-field (adjust key/field if needed) #}
+
+            {# Column 5: Status #}
+            <td data-field="status" class="event-status status-{{ event.status|lower }}">{{ event.status }}</td>
+            {# <<< ADDED data-field="status" #}
+
+            {# Column 6: Actions - No data-field needed #}
+            <td class="event-actions">
+                <button class="action-btn edit-btn"
+                        data-event-id="{{ event.id }}"
+                        data-detail-url="{% url 'event_detail_api' event.id %}"
+                        data-update-url="{% url 'event_update_api' event.id %}"
+                >Edit
+                </button>
+
+                <button class="action-btn delete-btn"
+                        data-event-id="{{ event.id }}"
+                        data-delete-url="{% url 'event_delete_api' event.id %}" {# URL for deletion #}
+                        data-event-title="{{ event.title|escapejs }}" {# Pass title for confirmation msg #}
+                >Delete
+                </button>
+
+                {# --- Publish/Revoke Button Logic --- #}
+                {# Render based on INITIAL status and admin role #}
+                {% if is_admin %} {# Only admins can publish/revoke #}
+                    {% if event.status == 'Draft' %}
+                        <button class="action-btn publish-btn"
+                                data-event-id="{{ event.id }}"
+                                data-event-title="{{ event.title|escapejs }}" {# Add title for confirm #}
+                                data-publish-url="{% url 'publish_event_api' event.id %}" {# Add publish URL #}
+                        >Publish
+                        </button>
+                    {% elif event.status == 'Published' %}
+                        <button class="action-btn revoke-btn"
+                                data-event-id="{{ event.id }}"
+                                data-event-title="{{ event.title|escapejs }}" {# Add title for confirm #}
+                                data-revoke-url="{% url 'revoke_event_api' event.id %}" {# Add revoke URL #}
+                        >Revoke
+                        </button>
+                    {% endif %}
+                {% elif event.status == 'Draft'  %} {# Non-admin view of Draft #}
+                    <button class="action-btn publish-btn-disabled" disabled title="Admin rights required">Publish
+                    </button>
+                {% elif event.status == 'Published'  %} {# Non-admin view of Draft #}
+                    <button class="action-btn Revoke-btn-disabled" disabled title="Admin rights required">Revoke
+                    </button>
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center;">
+                {% if is_admin %}
+                    No events found.
+                {% else %}
+                    You have not created any events yet.
+                {% endif %}
+                Create one!
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{# Only show controls if there are multiple pages #}
+{% if events.has_other_pages %}
+    <div class="pagination"> {# Use class from employee.css #}
+        <span class="page-info">
+            {# Display current page, total pages #}
+            Page {{ events.number }} of {{ events.paginator.num_pages }}
+        </span>
+        <span class="page-links">
+            {# "Previous" link #}
+            {% if events.has_previous %}
+                {# Link includes current GET params except 'page' #}
+                <a href="?page=
+
+                        {{ events.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value|urlencode }}{% endif %}{% endfor %}"
+                   class="page-step prev">« Previous</a>
+            {% else %}
+                {# Disabled "Previous" state #}
+                <span class="page-step prev disabled">« Previous</span>
+            {% endif %}
+
+            {# "Next" link #}
+            {% if events.has_next %}
+                {# Link includes current GET params except 'page' #}
+                <a href="?page=
+
+                        {{ events.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value|urlencode }}{% endif %}{% endfor %}"
+                   class="page-step next">Next »</a>
+            {% else %}
+                {# Disabled "Next" state #}
+                <span class="page-step next disabled">Next »</span>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
+
+<!-- Create button should be styled by .btn-create rule -->
+<button class="btn-create" id="openModal">+ Create Event</button>
+
+
+<!-- Modal should be styled by .modal, .modal-content rules -->
+<div id="eventModal" class="modal" data-mode="create" data-event-id="">
+    <div class="modal-content">
+        <span class="close">×</span>
+        <h2 id="modalTitle">Create Event</h2>
+        <label for="event-title">Event Title:</label>
+        <input type="text" id="event-title" placeholder="Enter event title" required>
+        <label for="scheduled_push_time">Scheduled Date & Time:</label> {# Ensure this ID matches JS #}
+        <input type="datetime-local" id="event-scheduled_push_time" required> {# Ensure this ID matches JS #}
+        <label for="event-content">Content:</label>
+        <div id="editor"></div>
+        <button class="btn-save" id="saveEvent">Save</button>
+        <p id="modalErrorMsg" style="color: red; display: none; margin-top: 10px;"></p> {# Ensure this exists too #}
+    </div>
+</div>
+
+<!-- Custom Alert Modal structure remains the same, styled by employee.css -->
+<div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+
+<div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">
+    <div class="checkmark"></div>
+    <span class="alert-text success-text" id="customSuccessAlertText">Success！</span>
+</div>
+
+<div class="alert-box error-alert" id="customErrorAlert" style="display: none;">
+    <div class="crossmark"></div>
+    <span class="alert-text error-text" id="customErrorAlertText">Error! Please try again</span>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="overlay" id="customConfirmOverlay" style="display: none;"></div>
+
+<div class="confirm-box" id="customConfirmBox" style="display: none;">
+    <div class="confirm-icon question-mark">?</div>
+    {# Or use an exclamation mark icon #}
+    <span class="confirm-text" id="customConfirmText">Are you sure?</span>
+    <div class="confirm-actions">
+        <button class="btn btn-confirm" id="confirmBtnYes">Yes</button>
+        <button class="btn btn-cancel" id="confirmBtnNo">No</button>
+    </div>
+</div>
+
+
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script src="{% static 'js/eventModal.js' %}"></script>
+<script src="{% static 'js/alert.js' %}"></script>
+</body>
+</html>

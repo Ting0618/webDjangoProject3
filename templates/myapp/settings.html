@@ -1,0 +1,72 @@
+{% load static %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/settings.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="settings-container">
+        <h1>User Settings</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="settings-section">
+            <h2>Change Avatar</h2>
+
+            {# --- Change Avatar Section --- #}
+            <div class="current-avatar">
+                <p>Current Avatar:</p>
+                {% if profile.avatar and profile.avatar.url %} {# Check url exists too #}
+                    <img src="{{ profile.avatar.url }}" alt="Current Avatar">
+                    {# Removed fixed width/height, let CSS handle #}
+                {% else %}
+                    {# display the actual default image here if needed #}
+                    <img src="{% static 'images/login.jpeg' %}" alt="Default Avatar"> {# Assuming static default #}
+                    {# <p>No avatar set.</p> #}
+                {% endif %}
+            </div>
+            <form method="post" enctype="multipart/form-data" action="{% url 'settings' %}">
+                {% csrf_token %}
+                {{ avatar_form.as_p }}
+                {# ADD btn and btn-submit classes #}
+                <button type="submit" name="submit_avatar" class="btn btn-submit">Update Avatar</button>
+            </form>
+        </div>
+
+        <hr>
+
+        {# --- Change Password Section --- #}
+        <div class="settings-section">
+            <h2>Change Password</h2>
+            <form method="post" action="{% url 'settings' %}">
+                {% csrf_token %}
+                {{ password_form.as_p }}
+                {# ADD btn and btn-submit classes #}
+                <button type="submit" name="submit_password" class="btn btn-submit">Change Password</button>
+            </form>
+        </div>
+
+    </div>
+
+    {# --- Alert Box HTML (Make sure this is included) --- #}
+    <div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+    <div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">
+        <div class="checkmark">✓</div>
+        {# Simple checkmark #}
+        <span class="alert-text success-text" id="customSuccessAlertText"></span>
+    </div>
+    <div class="alert-box error-alert" id="customErrorAlert" style="display: none;">
+        <div class="crossmark">✕</div>
+        {# Simple crossmark #}
+        <span class="alert-text error-text" id="customErrorAlertText"></span>
+    </div>
+{% endblock %}
+
+<script src="{% static 'js/alert.js' %}"></script>
+<script src="{% static 'js/settings_page.js' %}"></script>

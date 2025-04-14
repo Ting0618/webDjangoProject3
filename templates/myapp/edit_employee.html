@@ -1,0 +1,46 @@
+{% load static %}
+
+{% block title %}Edit Employee - {{ employee.username }}{% endblock %}
+
+{% block content %}
+<h1>Edit Employee: {{ employee.username }}</h1>
+
+{# Display messages (e.g., success/error) #}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{# The Form #}
+<form method="post">
+    {% csrf_token %} {# Essential for security #}
+
+    {# Render the form fields - adjust as needed #}
+    {{ form.as_p }} {# Renders fields as paragraphs. Use .as_ul or .as_table or render manually #}
+
+    {# Example of rendering fields manually for more control #}
+    {# <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="errorlist">{{ form.username.errors }}</div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.email.id_for_label }}">Email:</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="errorlist">{{ form.email.errors }}</div>
+        {% endif %}
+    </div> #}
+    {# ... render other fields ... #}
+
+    <hr>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{% url 'myapp:employee_list' %}" class="btn btn-secondary">Cancel</a> {# Link back to the list #}
+</form>
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registr.css' %}">
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <img src="{% static 'images/login.jpeg' %}" alt="User Icon">
+        </div>
+        <h1>Create an Account</h1>
+
+        {# Give the form an ID for easy JS selection #}
+        <form id="registrationForm" method="post" action="{% url 'register_api' %}"> {# Point action to API URL #}
+            {% csrf_token %}
+             <input type="hidden" name="role" value="staff">
+            {# --- Input Fields (Add divs for potential error messages) --- #}
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your full name" required>
+                <span class="error-message" id="username-error"></span> {# Error placeholder #}
+            </div>
+            <div class="input-group">
+                <label for="date">Birthday</label>
+                <input type="date" id="date" name="date" required>
+                 <span class="error-message" id="date-error"></span>
+            </div>
+             <div class="input-group">
+                 <label for="gender">Gender</label>
+                 <select id="gender" name="gender" required>
+                     <option value="" disabled selected>Select your gender</option>
+                     <option value="Male">Male</option>
+                     <option value="Female">Female</option>
+                     <option value="Other">Other</option>
+                 </select>
+                  <span class="error-message" id="gender-error"></span>
+             </div>
+            <div class="input-group">
+                <label for="department">Department</label>
+                <select id="department" name="department" required>
+                    <option value="" disabled selected>Select your department</option>
+                    <option value="HR">Human Resources</option>
+                    <option value="IT">Information Technology</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Finance">Finance</option>
+                 </select>
+                  <span class="error-message" id="department-error"></span>
+             </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <span class="error-message" id="email-error"></span>
+            </div>
+            <div class="input-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                <span class="error-message" id="phone-error"></span>
+            </div>
+             <div class="input-group">
+                 <label for="address">Address</label>
+                 <input type="text" id="address" name="address" placeholder="Enter your address" required>
+                 <span class="error-message" id="address-error"></span>
+             </div>
+            <div class="input-group">
+                 <label for="city">City</label>
+                 <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                 <span class="error-message" id="city-error"></span>
+             </div>
+             <div class="input-group">
+                 <label for="country">Country</label>
+                 <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                 <span class="error-message" id="country-error"></span>
+             </div>
+             <div class="input-group">
+                 <label for="zipcode">ZIP Code</label>
+                 <input type="text" id="zipcode" name="zipcode" placeholder="Enter your ZIP code" required>
+                 <span class="error-message" id="zipcode-error"></span>
+             </div>
+             <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Set a password" required>
+                 <span class="error-message" id="password-error"></span>
+             </div>
+             <div class="input-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                 <span class="error-message" id="confirm-password-error"></span>
+             </div>
+             {# General error message area #}
+             <div id="general-error" class="error-message" style="text-align: center; font-weight: bold;"></div>
+
+            <button type="submit" class="btn-register">Register Now</button>
+
+            <div class="login-link">
+                Already have an account? <a href="{% url 'login' %}">Log in now</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Alert Box Structure (Reuse from previous step) -->
+    <div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+    <div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">
+        <div class="checkmark"></div>
+        <span class="alert-text success-text" id="customSuccessAlertText">Registration Successful!</span>
+    </div>
+    <div class="alert-box error-alert" id="customErrorAlert" style="display: none;">
+        <div class="crossmark"></div>
+        <span class="alert-text error-text" id="customErrorAlertText">Registration Failed!</span>
+    </div>
+</body>
+<script src="{% static 'js/validation.js' %}"></script>
+</html>

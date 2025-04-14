@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}" />
+  <title>Employee Dashboard</title>
+
+</head>
+<body>
+  <div class="dashboard">
+    <!-- welcome section -->
+    <div class="header">
+      <h1>Welcome</h1>
+      <p>Employee Dashboard</p>
+    </div>
+
+    <!-- information card -->
+    <div class="info-cards">
+      <div class="card">
+        <div class="profile-pic">
+          <img src="{% static 'images/login.jpeg' %}" alt="Profile Picture" />
+        </div>
+        <h2>John Doe</h2>
+        <p>Software Engineer</p>
+        <p>Email: john.doe@example.com</p>
+        <p>Department: Research & Development</p>
+      </div>
+
+      <!-- Project Stats card -->
+      <div class="card">
+        <h2>Project Stats</h2>
+        <div class="stats">
+          <div class="stat">
+            <h3>5</h3>
+            <p>Active</p>
+          </div>
+          <div class="stat">
+            <h3>12</h3>
+            <p>Total</p>
+          </div>
+          <div class="stat">
+            <h3>3</h3>
+            <p>Pending</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance information -->
+      <div class="card">
+        <h2>Performance</h2>
+        <p>Rating: <strong>A</strong></p>
+        <p>Last Review: <strong>2025-01-15</strong></p>
+      </div>
+    </div>
+
+    <!-- Announcements ssection -->
+    <div class="announcements">
+      <h2>Announcements</h2>
+      <ul>
+        <li>Company meeting scheduled on February 25, 2025.</li>
+        <li>New project launch next week.</li>
+        <li>Team building activity on March 1, 2025.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

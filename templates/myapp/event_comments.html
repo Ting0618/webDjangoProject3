@@ -1,0 +1,101 @@
+{% load static %}
+{% load tz %} {# Load timezone filters if using timezone-aware datetimes #}
+
+{% block title %}{{ event.title }} Comments{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/event_comments.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/alert.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="event-detail-container">
+        <h1>{{ event.title }}</h1>
+        <p class="event-meta">Published: {{ event.scheduled_push_time|date:"N j, Y, P" }}</p>
+        <hr>
+        <div class="event-content">
+            {{ event.content|safe }}
+        </div>
+        <hr>
+
+        <h2>Comments (<span id="comment-count">{{ comments.count|default:0 }}</span>)</h2> {# Display count #}
+        <div class="comments-section">
+            <div id="comment-list">
+                {% for comment in comments %}
+                    <div class="comment" id="comment-{{ comment.id }}">
+                        <div class="comment-header">
+                            <div class="comment-author-avatar">
+                                {# Display Avatar - Check profile and avatar existence #}
+                                {% if comment.author and comment.author.profile and comment.author.profile.avatar and comment.author.profile.avatar.url %}
+                                    <img src="{{ comment.author.profile.avatar.url }}"
+                                         alt="{{ comment.author.username }}'s avatar" class="comment-avatar-img">
+                                {% else %}
+                                    {# Fallback default avatar #}
+                                    <img src="{% static 'images/login.jpeg' %}" alt="Default avatar"
+                                         class="comment-avatar-img">
+                                {% endif %}
+                            </div>
+                            <div class="comment-author-info">
+                                {# Display Username #}
+                                <span class="comment-author-name">
+                                {{ comment.author.username|default:'Deleted User' }}
+                            </span>
+                                {# Display Date - Use timezone filter 'localtime' if needed #}
+                                <span class="comment-timestamp">
+                                {{ comment.created_at|localtime|date:"N j, Y, P" }} {# Format as desired #}
+                                {# Or use timesince: {{ comment.created_at|timesince }} ago #}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="comment-content-body">
+                            {# Display Content #}
+                            {{ comment.content|linebreaksbr }}
+                        </div>
+                        <div class="comment-actions">
+                            <div class="like-button-container">
+                                <button class="btn btn-like {% if comment.is_liked_by_user %}liked{% endif %}"
+                                        {# Keep liked class #}
+                                        data-comment-id="{{ comment.id }}"
+                                        data-like-url="{% url 'like_comment_api' comment.id %}"
+                                        {# Disable button if already liked (handled better by JS later, but good for initial state) #}
+                                        {% if comment.is_liked_by_user %}disabled{% endif %}
+                                        title="{% if comment.is_liked_by_user %}You liked this{% else %}Like this comment{% endif %}"
+                                        {# Add tooltip #}
+                                >
+                                    {# Heart Icon (using text character) #}
+                                    <span class="like-icon">♥</span>
+                                    {# You could replace this with <i class="fas fa-heart"></i> if using Font Awesome #}
+                                </button>
+                                {# Span for the count, directly next to the button #}
+                                <span class="like-count" data-comment-id="{{ comment.id }}">{{ comment.likes.count }} {# Use likes.count or annotated like_count #}</span>
+                                {# Optional: Add "Likes" text after the count if desired #}
+                                {# <span class="like-text"> Likes</span> #}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p id="no-comments-yet">Be the first to comment!</p>
+                {% endfor %}
+            </div>
+
+            {# --- Comment Form --- #}
+            <h3>Leave a Comment</h3>
+            <form id="comment-form" method="post" action="{% url 'add_event_comment' event.id %}">
+                {% csrf_token %}
+                <textarea name="content" required placeholder="Write your comment..."></textarea>
+                <button type="submit" class="btn">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    {# Alert Boxes #}
+    <div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+    <div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">...</div>
+    <div class="alert-box error-alert" id="customErrorAlert" style="display: none;">...</div>
+{% endblock %}
+
+{% block scripts_extra %}
+    <script src="{% static 'js/alert.js' %}"></script>
+    {# Load JS for handling likes, maybe AJAX comment submission #}
+    <script src="{% static 'js/comments.js' %}"></script>
+{% endblock %}

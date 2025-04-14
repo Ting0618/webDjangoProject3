@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    background-color: #ecf0f1;
+  }
+  
+  /* Left Sidebar */
+  .sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #66a17f;
+    color: #ecf0f1;
+    padding-top: 20px;
+    position: fixed;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* First-level menu items (including direct links and parent links with submenus). */
+  .sidebar a,
+  .sidebar .menu-item > a {
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 16px;
+    transition: 0.3s;
+    border-left: 5px solid transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+  }
+  
+  .sidebar a:hover,
+  .sidebar .menu-item > a:hover {
+    background-color: #81b897;
+    border-left: 5px solid #ffffff;
+  }
+  
+  .sidebar .menu-item > a .arrow {
+    position: absolute;
+    right: 15px;
+    font-size: 12px;
+  }
+  
+  .submenu {
+    display: none;
+    background-color: #5a8a6d;
+  }
+  
+  .submenu a {
+    padding: 12px 30px;
+    font-size: 14px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    color: #ecf0f1;
+  }
+  
+  .submenu a:hover {
+    background-color: #558d6b;
+  }
+  
+  .content {
+    margin-left: 200px;
+    flex: 1;
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 15px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #ffffff;
+  }

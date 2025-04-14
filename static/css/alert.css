@@ -1,0 +1,89 @@
+.alert-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+}
+
+.alert-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.alert-modal.success .alert-modal-content {
+    border-left: 5px solid #28a745;
+}
+
+.alert-modal.error .alert-modal-content {
+    border-left: 5px solid #dc3545;
+}
+
+.alert-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    /* display: none; /* JS will control display */
+    align-items: center;
+    opacity: 0; /* Start transparent for fadeIn */
+    /* animation: fadeIn 0.5s ease-out forwards; /* Apply animation via JS */
+    z-index: 1060; /* Ensure it's above other modals (adjust if needed) */
+    display: none; /* Hide initially */
+}
+
+/* 成功提示框 */
+.success-alert {
+    background: #e8f5e9;
+    border: 1px solid #66bb6a;
+}
+
+/* 失败提示框 */
+.error-alert {
+    background: #ffebee;
+    border: 1px solid #ef5350;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* Start slightly higher */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%); /* Settle in the middle */
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -60%); /* End slightly higher */
+    }
+}

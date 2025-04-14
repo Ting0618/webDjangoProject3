@@ -1,0 +1,62 @@
+{# myapp/add_employee.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add employee</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/add_employee.css' %}">
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Add New Employee</h1>
+
+    {# Display Django messages framework messages (success/error) #}
+    {% if messages %}
+        {% for message in messages %}
+            {# Use Django message tags for styling #}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" action="{% url 'add_employee' %}"> {# Use namespace if needed #}
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    {# Django forms render errors nicely by default #}
+                    <div class="errorlist">{{ field.errors }}</div>
+                {% endif %}
+                {% if field.help_text %}
+                    {# ... help text ... #}
+                {% endif %}
+            </div>
+        {% endfor %}
+        <div class="form-actions">
+            {# Use namespace if needed #}
+            <a href="{% url 'employee_list' %}" class="btn btn-cancel">Cancel</a>
+            <button type="submit" class="btn btn-save-employee">Save Employee</button>
+        </div>
+    </form>
+</div>
+
+{# --- Alert Box HTML --- #}
+<div class="overlay" id="customAlertOverlay" style="display: none;"></div>
+<div class="alert-box success-alert" id="customSuccessAlert" style="display: none;">
+    <div class="checkmark"></div>
+    <span class="alert-text success-text" id="customSuccessAlertText"></span>
+</div>
+<div class="alert-box error-alert" id="customErrorAlert" style="display: none;">
+    <div class="crossmark"></div>
+    <span class="alert-text error-text" id="customErrorAlertText"></span>
+</div>
+
+</body>
+<script src="{% static 'js/add_employee.js' %}"></script>
+</html>

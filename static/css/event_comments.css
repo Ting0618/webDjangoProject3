@@ -1,0 +1,313 @@
+/* static/css/comments.css */
+
+/* --- Copy CSS Variables (ensure these are available) --- */
+/* If using base_iframe.html that loads common CSS, you might not need to repeat these */
+:root {
+    --primary-color: #FFD700;
+    --accent-color: #558d6b;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #757575;
+    --text-color: #333333;
+    --white: #ffffff;
+    --black: #000000;
+    --error-bg: #ffebee;
+    --error-text: #c62828;
+    --success-bg: #e8f5e9;
+    --success-text: #2e7d32;
+    /* Add more as needed */
+}
+
+/* --- Basic Body Styles (if not inherited) --- */
+body { /* Apply if not inheriting from base_iframe.html */
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+/* --- Main Container Styling (like .settings-container) --- */
+.event-detail-container {
+    max-width: 800px; /* Slightly wider for content + comments */
+    margin: 20px auto;
+    padding: 30px 40px; /* Adjust padding */
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Event Title Styling (like settings h1) --- */
+.event-detail-container > h1 {
+    text-align: center;
+    margin-bottom: 10px; /* Less margin below title */
+    color: var(--primary-color); /* Gold */
+    font-weight: 600;
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.event-detail-container > h1:after { /* Optional underline */
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--primary-color); /* Gold */
+}
+
+/* --- Event Meta Info --- */
+.event-meta {
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--dark-gray);
+    margin-bottom: 25px;
+}
+
+/* --- Event Content Area --- */
+.event-content {
+    margin-bottom: 30px;
+    line-height: 1.7; /* Slightly more line height for readability */
+    color: var(--text-color);
+}
+
+/* --- Section Titles (like settings h2) --- */
+.event-detail-container h2 {
+    margin-top: 40px; /* Space above comments section */
+    margin-bottom: 20px;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 22px;
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 10px;
+}
+
+.comments-section h3 { /* "Leave a Comment" title */
+     margin-top: 30px;
+     margin-bottom: 15px;
+     font-size: 18px;
+     font-weight: 600;
+     color: var(--text-color);
+}
+
+
+/* --- Separator --- */
+.event-detail-container hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--medium-gray);
+    margin: 30px 0;
+}
+
+/* --- Comment List Styling --- */
+#comment-list {
+    margin-bottom: 30px;
+}
+
+.comment {
+    background-color: var(--light-gray); /* Light background for each comment */
+    border: 1px solid var(--medium-gray);
+    border-left: 4px solid var(--accent-color); /* Accent color border */
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.comment p {
+    margin: 0 0 10px 0; /* Spacing between paragraphs within a comment */
+}
+
+.comment strong { /* Author name */
+    color: var(--accent-color); /* Green accent */
+}
+
+.comment .comment-timestamp {
+    font-size: 0.85em;
+    color: var(--dark-gray);
+    margin-left: 10px;
+}
+
+/* --- Comment Form Styling --- */
+#comment-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--medium-gray);
+    border-radius: 6px;
+    font-size: 16px;
+    min-height: 100px; /* Minimum height */
+    transition: all 0.3s ease;
+    background-color: var(--white);
+    box-sizing: border-box;
+    margin-bottom: 15px; /* Space before button */
+}
+
+#comment-form textarea:focus {
+    border-color: var(--primary-color); /* Gold */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2); /* Gold shadow */
+}
+
+/* --- Button Styling (Adapted from .btn-submit) --- */
+.event-detail-container .btn { /* General button style within container */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: none;
+    padding: 10px 20px; /* Slightly smaller padding */
+    font-size: 15px; /* Slightly smaller font */
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-width: 120px; /* Adjust as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#comment-form button.btn { /* Specific style for comment post button */
+    background-color: var(--primary-color); /* Gold */
+    color: var(--black); /* Black text on gold */
+}
+
+#comment-form button.btn:hover {
+    background-color: #e6c300; /* Darker gold */
+    color: var(--black);
+    transform: translateY(-1px); /* Subtle hover effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* --- Responsive adjustments --- */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    .event-detail-container {
+        padding: 20px 15px;
+        margin: 10px;
+    }
+    .event-detail-container > h1 {
+        font-size: 24px;
+    }
+     .event-detail-container h2 {
+        font-size: 20px;
+    }
+    /* Adjust comment indentation on small screens if using nested replies */
+    /* .comment .replies { margin-left: 20px; padding-left: 15px; } */
+}
+
+/* comments */
+.comment {
+    /* ... (keep existing styles) ... */
+    position: relative; /* For potential absolute positioning inside */
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author-avatar {
+    margin-right: 10px;
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+}
+
+.comment-avatar-img {
+    width: 40px;  /* Adjust size */
+    height: 40px; /* Adjust size */
+    border-radius: 50%;
+    border: 1px solid var(--medium-gray);
+    object-fit: cover; /* Ensure image covers the area */
+    vertical-align: middle;
+}
+
+.comment-author-info {
+    display: flex;
+    flex-direction: column; /* Stack name and timestamp */
+}
+
+.comment-author-name {
+    font-weight: 600;
+    color: var(--text-color); /* Or accent color */
+    font-size: 0.95em;
+}
+
+.comment-timestamp {
+    font-size: 0.8em; /* Smaller timestamp */
+    color: var(--dark-gray);
+}
+
+.comment-content-body {
+    padding-left: 50px; /* Indent content below avatar */
+    margin-bottom: 10px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.comment-actions {
+    padding-left: 50px;
+    margin-top: 10px;
+    display: flex; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 15px; /* Space between like area and reply button etc. */
+}
+
+.like-button-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between heart button and count */
+}
+
+.comment-actions .btn.btn-like {
+    font-size: 1.1em;  /* Make heart slightly larger */
+    padding: 2px 6px; /* Adjust padding for icon button */
+    background-color: transparent; /* Make button background transparent */
+    color: var(--dark-gray); /* Default color for heart */
+    border: none; /* Remove border */
+    cursor: pointer;
+    line-height: 1; /* Prevent extra space */
+    min-width: auto; /* Remove min-width for icon button */
+    box-shadow: none; /* Remove default shadow */
+    transition: color 0.2s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.comment-actions .btn.btn-like:hover {
+    color: #e74c3c; /* Red color on hover (like intention) */
+    background-color: transparent; /* Keep background transparent */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Style for the button WHEN it has the 'liked' class */
+.comment-actions .btn.btn-like.liked {
+    color: #e74c3c; /* Red color for liked state */
+    cursor: default; /* Change cursor as it's not clickable */
+}
+.comment-actions .btn.btn-like.liked:hover {
+    transform: none; /* Disable hover scale effect when liked */
+}
+/* Disable pointer events if truly disabled */
+.comment-actions .btn.btn-like:disabled {
+     color: #e74c3c; /* Ensure liked color even when disabled */
+     cursor: default;
+     opacity: 0.8; /* Slightly faded */
+     pointer-events: none; /* Make it definitely not clickable */
+}
+
+
+.comment-actions .like-icon {
+    display: inline-block; /* Needed for potential transforms */
+}
+
+.comment-actions .like-count {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
