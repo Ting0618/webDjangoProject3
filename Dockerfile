@@ -1,29 +1,29 @@
 # Dockerfile
 
-# 1. 选择一个基础 Python 镜像
+# 1. Choose a base Python image
 FROM python:3.11-slim
 
-# 3. 设置工作目录
+# 3. Set the working directory.
 WORKDIR /app
 
-# 4. 安装系统依赖 (如果需要，例如编译某些 Python 包可能需要)
+# 4. Install system dependencies
 # RUN apt-get update && apt-get install -y --no-install-recommends gcc build-essential libpq-dev && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y python3-dev default-libmysqlclient-dev build-essential pkg-config
-# 5. 安装 Python 依赖
-# 先复制 requirements.txt 并安装，利用 Docker 的层缓存机制
+# 5. install Python dependencies
+# Copy requirements.txt and install dependencies first to leverage Docker’s layer caching.
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 6. 复制项目代码到工作目录
+# 6. Copy the project code into the working directory.
 COPY . .
 
 RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-# 7. 暴露端口 (Django 开发服务器默认端口为 8000)
+# 7. Expose port 8000 (default for Django dev server)
 EXPOSE 8000
 
-# 8. 运行命令 (开发环境)
-# 注意：runserver 不适用于生产环境！
+# 8. Run the development server.
+# Note: Django’s runserver is intended for development only and should not be used in production.
 CMD ["gunicorn", "webDjangoProject3.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]

@@ -88,26 +88,6 @@ def add_event_comment_view(request, event_id):
             # Redirect back even if there's an error (or re-render with form errors if using Django Forms)
             return redirect('event_comments', event_id=event.id)
 
-        # Option 2: Using a Django Form (Recommended for better validation)
-        # form = CommentForm(request.POST)
-        # if form.is_valid():
-        #     new_comment = form.save(commit=False)
-        #     new_comment.event = event
-        #     new_comment.author = request.user
-        #     # Handle parent logic here if using form for replies
-        #     new_comment.save()
-        #     messages.success(request, 'Comment posted successfully!')
-        #     return redirect('event_comments', event_id=event.id)
-        # else:
-        #     # If form is invalid, ideally re-render event_comments page
-        #     # with the form containing errors. This requires passing the
-        #     # invalid form back in the context.
-        #     messages.error(request, 'Please correct the errors below.')
-        #     # Fetch comments again for re-rendering
-        #     comments = event.comments.filter(parent__isnull=True).order_by('created_at')
-        #     context = {'event': event, 'comments': comments, 'comment_form': form}
-        #     return render(request, 'myapp/event_comments.html', context)
-
     else:
         # If someone tries to access this URL via GET, just redirect them
         return redirect('event_comments', event_id=event.id)
